@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import { store } from '../store/store.js'
+// import { store } from '../store/store.js'
 Vue.use(VueRouter)
 
 const routes = [
@@ -43,9 +43,9 @@ const router = new VueRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  if ((to.path !== '/' && to.path !== '/aboutus') && store.state.user.id === -1) {
+  if ((to.path !== '/' && to.path !== '/aboutus') && localStorage.getItem('id') === '') {
     next({ path: '/' })
-  } else if (to.path === '/' && store.state.user.id !== -1) {
+  } else if (to.path === '/' && localStorage.getItem('id') !== '') {
     next({ path: '/items' })
   } else {
     next()

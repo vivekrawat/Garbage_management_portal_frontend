@@ -8,7 +8,6 @@
     clipped-left
     >
       <v-toolbar-title class="headline font-weight-bold white--text">Garbage Management Portal</v-toolbar-title>
-      <v-chip absolute class="primary my-2"></v-chip>
       <v-spacer/>
       <v-switch
         v-model="$vuetify.theme.dark"
@@ -20,13 +19,13 @@
         <span class="white--text">Toggle Theme</span>
       </template>
       </v-switch>
-    <v-btn @click="toAbout" class="mx-2" dark v-show="$store.state.user.id == -1" outlined> About us</v-btn>
-    <v-btn @click="logout" v-show="$store.state.user.id !== -1" class="body-1" dark outlined> Log Out</v-btn>
+    <v-btn @click="toAbout" class="mx-2" dark v-show="$store.state.user.id === ''" outlined> About us</v-btn>
+    <v-btn @click="logout" v-show="$store.state.user.id !== ''" class="body-1" dark outlined> Log Out</v-btn>
     <!--<v-btn @click="logout" fab small v-show="$store.state.user.id !== -1" class="body-1" dark color="primary"> {{$store.state.user.email[0].toUpperCase()}}</v-btn>-->
     </v-app-bar>
     </v-card>
     <v-navigation-drawer
-      v-show="$store.state.user.id !== -1"
+      v-show="$store.state.user.id !== ''"
       width="95"
       clipped
       permanent
@@ -113,7 +112,12 @@ export default {
       return this.$store.state.user.email[0].toUpperCase()
     },
     logout () {
-      this.$store.state.user.id = -1
+      this.$store.state.user.id = ''
+      localStorage.setItem('id', '')
+      localStorage.setItem('token', '')
+      localStorage.setItem('email', '')
+      localStorage.setItem('type', '')
+      localStorage.setItem('name', '')
       this.$router.replace({ path: '/' })
     },
     toAbout () {

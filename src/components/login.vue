@@ -56,7 +56,8 @@ export default {
   },
   methods: {
     login () {
-      fetch('http://localhost:3000/api/' + this.type.toLowerCase() + '/login', {
+      console.log(this.$store.state.url)
+      fetch(this.$store.state.url + 'api/' + this.type.toLowerCase() + '/login', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -79,10 +80,16 @@ export default {
           }
         })
         .then(data => {
-          // console.log(data)
+          console.log(data)
+          localStorage.setItem('token', data.accessToken)
+          this.$store.state.user.name = data.accessToken
+          localStorage.setItem('id', data.id)
           this.$store.commit('setUserId', data.id)
+          localStorage.setItem('name', data.name)
           this.$store.state.user.name = data.name
+          localStorage.setItem('email', data.email)
           this.$store.state.user.email = data.email
+          localStorage.setItem('type', this.type)
           this.$router.replace({ path: 'items' })
         })
     },

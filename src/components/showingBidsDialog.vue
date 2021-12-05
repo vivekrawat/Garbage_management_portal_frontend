@@ -76,12 +76,13 @@ export default {
   },
   methods: {
     addBid () {
-      fetch('http://localhost:3000/api/bid/addbid', {
+      fetch(this.$store.state.url + 'api/bid/addbid', {
         method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'x-access-token': localStorage.getItem('token')
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
@@ -95,12 +96,13 @@ export default {
         })
     },
     sell (id, companyid, bidprice, itemid, companyname) {
-      fetch('http://localhost:3000/api/item/sell/' + this.id + '/' + companyid + '/' + companyname, {
+      fetch(this.$store.state.url + 'api/item/sell/' + this.id + '/' + companyid + '/' + companyname, {
         method: 'PUT',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'x-access-token': localStorage.getItem('token')
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer'

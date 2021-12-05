@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     moveToHistory (id) {
-      fetch('http://localhost:3000/api/item/moveToHistory/' + id, {
+      fetch(this.$store.state.url + 'api/item/moveToHistory/' + id, {
         method: 'PUT',
         mode: 'cors',
         headers: {

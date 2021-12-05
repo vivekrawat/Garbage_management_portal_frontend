@@ -63,8 +63,8 @@ export default {
     } */
   },
   methods: {
-    showBids () {
-      this.$store.dispatch('loadBids', this.item.id)
+    async showBids () {
+      await this.$store.dispatch('loadBids', this.item.id)
       this.bidsDialog = true
     }
   },

@@ -9,6 +9,7 @@
             <v-card-title class="green lighten-1">
                 <span class="headline">Add Item</span>
                 <v-spacer/>
+
                 <v-btn @click="$emit('change',false)" small class="">
                     <v-icon color="grey darken-3">mdi-close-thick</v-icon>
                 </v-btn>
@@ -27,14 +28,26 @@
                         @change="handleFiles(addItem.itemImage)"
                         ></v-file-input>
                     </v-col>-->
-                    <v-col cols="12">
+                    <v-col cols="6">
                         <v-text-field
                         hide-details
                         dense
-                        label="Item Image Url"
-                        placeholder="Item Image Url"
-                        v-model="addItem.itemimage">
-                        </v-text-field>
+                        label="Image Name"
+                        placeholder="Image Name"
+                        v-model="imageName"
+                        disabled
+                        />
+                    </v-col>
+                    <v-col cols="6">
+                        <uploadcare :publicKey="key" @click="onClick" @success="onSuccess" @error="onError">
+                        <v-btn>Upload Image</v-btn>
+                        </uploadcare>
+                    </v-col>
+                    <v-col cols="6" v-if="addItem.itemimage !== ''">
+                        <v-img
+                        :src="addItem.itemimage"
+                        height="200"
+                        width="200"/>
                     </v-col>
                     <v-col cols="12">
                         <v-text-field
@@ -104,13 +117,19 @@
     </div>
 </template>
 <script>
+import Uploadcare from 'uploadcare-vue'
 export default {
   props: ['edit', 'addItem'],
   model: {
     prop: 'edit',
     event: 'change'
   },
+  components: {
+    Uploadcare
+  },
   data: () => ({
+    key: this.$store.state.uploadCareKey,
+    imageName: '',
     rules: [
       addItem => !addItem || addItem.size < 2000000 || 'Avatar size should be less than 2 MB!'
     ],
@@ -125,6 +144,17 @@ export default {
         this.addItem.itemImage = reader.result
       }
     }, */
+    onError (data) {
+      console.log(data)
+    },
+    onClick () {
+      console.log('this has bee clicked')
+    },
+    onSuccess (data) {
+      this.addItem.itemimage = data.cdnUrl
+      this.imageName = data.name
+      console.log(data)
+    },
     submit () {
       this.$emit('change', false)
       this.$emit('save', this.addItem)
